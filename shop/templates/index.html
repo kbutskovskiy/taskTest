@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Главная страница</h2>
+  <p>Добро пожаловать, {{ user.username }}!</p>
+
+  <h3>Товары</h3>
+  <ul>
+    {% for product in products %}
+      <li>
+        {{ product.name }} - {{ product.description }} - {{ product.price }} руб.
+        <a href="{% url 'shop:add_to_cart' product.id %}">Добавить в корзину</a>
+      </li>
+    {% empty %}
+      <li>Товаров нет.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'shop:view_cart' %}">Просмотреть корзину</a>
+{% endblock %}
+</body>
+</html>
