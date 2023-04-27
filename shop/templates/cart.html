@@ -8,22 +8,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Корзина</h2>
+    <h2>Корзина</h2>
+    <p>Ваш баланс: {{ user.userprofile.balance }} руб.</p>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                {{ item.product.name }} - {{ item.quantity }} шт. - {{ item.product.price }} руб./шт.
+                <a href="{% url 'shop:update_cart' item.id 'increase' %}">+</a>
+                <a href="{% url 'shop:update_cart' item.id 'decrease' %}">-</a>
+                <a href="{% url 'shop:remove_from_cart' item.id %}">Удалить из корзины</a>
+                <a href="{% url 'shop:purchase' %}" class="btn btn-primary">Купить</a>
+            </li>
+        {% empty %}
+            <li>Ваша корзина пуста.</li>
+        {% endfor %}
+    </ul>
 
-  <ul>
-    {% for item in cart_items %}
-      <li>
-        {{ item.product.name }} - {{ item.quantity }} шт. - {{ item.product.price }} руб./шт.
-        <a href="{% url 'shop:update_cart' item.id 'increase' %}">+</a>
-        <a href="{% url 'shop:update_cart' item.id 'decrease' %}">-</a>
-        <a href="{% url 'shop:remove_from_cart' item.id %}">Удалить из корзины</a>
-      </li>
-    {% empty %}
-      <li>Ваша корзина пуста.</li>
-    {% endfor %}
-  </ul>
-
-  <a href="{% url 'shop:index' %}">Вернуться на главную</a>
+    <a href="{% url 'shop:index' %}">Вернуться на главную</a>
 {% endblock %}
+
+
 </body>
 </html>
